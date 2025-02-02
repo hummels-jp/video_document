@@ -106,7 +106,27 @@
 1. 通过2维图像特征提取网络，处理各个视角的图像数据。
 2. 通过 FPN 和 ADP，进行多尺度融合。 FPN Feature Pyramid Network 特征金字塔。不同尺度的图像特征，通过ADP进行上采样，池化，卷积，可以得到相同大小的特征，从而实现多尺度特征融合。
 3.  ADP（Adaptive Deformable Part） ADP 指的是一种自适应形变机制，用于处理不同形态和尺度的目标，以提高目标检测或分割的效果。
-4. FPN + ADP 设计流程： 
+4. FPN + ADP 设计流程： 输入：基础图像特征； 输出： 多尺度融合特征。 处理流程： 1 对每层特征使用ADP模块；2 ADP 模块包括上采样，池化，卷积。 3 多层特征融合。
+
+1. process the image from different viewpoint using a 2d image feature extraction network, for example ResNet.
+2. Perform multi-scale fusion using FPN Feature Pyramid Network and ADP Adaptive Deformable Part.
+3. FPN Feature Pyramid Network, extracts image features at different scale.
+4. Different image features are processed through ADP, which performs upsampling, pool, and convolusion to obtain image features at the same scale, which enable multi-scale feature fusion.
+5. ADP Adaptive Deformable Part is an adaptvie demormable mechanism used to handle objects of varing shapes and scales, improving object detection and object segmentation.
+6. FPN + ADP design process: input: basic image features at different scale; output: multi-scale fusion image features at the same scale. process step: 1 apply the ADP to each different scale feature layer to get correspondent same scale feature layer. 2 ADP includes upsampling, pool and convolution. 3 fuse the feature layers those in the same scale.
+  
+
+![alt text](合并PDF_纯图版_21.png) 
+1. 通过2维图像特征提取网络，处理各个视角的图像数据。
+2. 通过 FPN 和 ADP，进行多尺度融合。 FPN Feature Pyramid Network 特征金字塔。不同尺度的图像特征，通过ADP进行上采样，池化，卷积，可以得到相同大小的特征，从而实现多尺度特征融合。
+3.  ADP（Adaptive Deformable Part） ADP 指的是一种自适应形变机制，用于处理不同形态和尺度的目标，以提高目标检测或分割的效果。
+4. FPN + ADP 设计流程： 输入：基础图像特征； 输出： 多尺度融合特征。 处理流程： 1 对每层特征使用ADP模块；2 ADP 模块包括上采样，池化，卷积。 3 多层特征融合。
+
+1. ２D画像特徴抽出ネットワークを使用して、各視点の画像を処理する。
+2. FPNとADPを用いてマルチスケール特徴融合を実施する。　FPNは異なるスケールの画像特徴を抽出する。
+3. 異なるスケールの画像特徴をADPで処理し、アップサンプリング、プーリング、畳み込みを行うことで、同じスケールの特徴を取得し、マルチスケール特徴融合を実現する。
+4. ADPは適応変形メカリズムであり、異なる形状やスケールの物体に対応し、物体検出やセグメンテーションの精度を向上させる。
+5. FPN＋ADPの設計プロセス、入力：
 ![alt text](合并PDF_纯图版_22.png) 
 
 ![alt text](合并PDF_纯图版_23.png) 
