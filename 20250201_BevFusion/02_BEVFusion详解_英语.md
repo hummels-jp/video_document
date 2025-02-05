@@ -1,20 +1,3 @@
-![alt text](合并PDF_纯图版_00.png) 
-![alt text](合并PDF_纯图版_01.png) 
-![alt text](合并PDF_纯图版_02.png) 
-![alt text](合并PDF_纯图版_03.png) 
-![alt text](合并PDF_纯图版_04.png) 
-![alt text](合并PDF_纯图版_05.png) 
-![alt text](合并PDF_纯图版_06.png) 
-![alt text](合并PDF_纯图版_07.png) 
-![alt text](合并PDF_纯图版_08.png) 
-![alt text](合并PDF_纯图版_09.png) 
-![alt text](合并PDF_纯图版_10.png) 
-![alt text](合并PDF_纯图版_11.png) 
-![alt text](合并PDF_纯图版_12.png) 
-![alt text](合并PDF_纯图版_13.png) 
-![alt text](合并PDF_纯图版_14.png) 
-![alt text](合并PDF_纯图版_15.png) 
-![alt text](合并PDF_纯图版_16.png) 
 ![alt text](合并PDF_纯图版_17.png) 
 ![alt text](合并PDF_纯图版_18.png) 
 1. BevFusion 包含2个部分的内容，Bev 是一个鸟瞰空间， Fusion 是多模态数据融合，例如 Camera图像与LiDar点云的融合。
@@ -123,58 +106,72 @@
 
 
 ![alt text](合并PDF_纯图版_22.png) 
-1. ２Dから３Dへの特徴変換：２D画像の各ピクセルに対して深度予測を行い、離散的な深度予測確率を得る。
-2. 確率を重みとして画像特徴と掛け合わせることで、２D画像の３D空間を取得し、３D疑似ボクセル特徴を形成します。
-3. ３D疑似ボクセル特徴の処理フロー：　入力：マルチスケール融合特徴。　出力：３D疑似ボクセル特徴。手順：1　
+- ２Dから３Dへの特徴変換：２D画像の各ピクセルに対して深度予測を行い、離散的な深度予測確率を得る。
+- 確率を重みとして画像特徴と掛け合わせることで、２D画像の３D空間を取得し、３D疑似（ぎじ）ボクセル特徴を形成します。
+- 3D疑似ボクセル特徴の処理フロー：　入力：マルチスケール融合特徴。　出力：３D疑似ボクセル特徴。手順：1　深度分布推定を計算。2　２Dから３Dへの投影変換を行う。　3　３D疑似ボクセルを出力する。
 
 ![alt text](合并PDF_纯图版_23.png) 
+- 将3D特征转换成BEV特征
+- 通过俯视图，将3维特征压缩为2维Bev特征。
+
+ ![alt text](合并PDF_纯图版_23.png) 
+- 3D疑似特徴から２D BEV特徴への変換が行う。
+- 俯瞰（ふかん）ビューを利用して、３D特徴から２D　BEV特徴に圧縮（あっしゅく）する
+
 ![alt text](合并PDF_纯图版_24.png) 
+- 点云分支直接对3D点云特征进行压缩，得到2D的点云BEV特征。
+- 常见的3D点云特征提取网络有：PointNet，PointNet++， VoxelNet，PointPillar，CenterPoint，Transfusion等
+
+![alt text](合并PDF_纯图版_24.png) 
+- 点群ブランチは３D点群特徴を直接圧縮して、２Dの点群BEV特徴を得る。
+- 一般的な３D点群特徴抽出ネットワークには、PointNet、PointNet＋＋、　VoxelNet、PointPillar、CenterPoint,　Transfusionなどがある。
+
+
 ![alt text](合并PDF_纯图版_25.png) 
+- 现在看到的是3D点云特征提取网络 PointPillar的结构图。
+- 将点云空间分割为若干个柱子，每个柱子中所包含的点的特征，作为该柱子的特征。
+- 将点云空间分割为 D*P*N 维的向量，其中， D表示单个三个点的特征， N表示一个柱子中三维点的个数。P表示整个空间中，柱子的个数。
+- D 是一个9维向量，分别是 x, y, z 表示点的坐标， xc, yc,zc 表示柱子中线点坐标， xp， yp 表示三维点距离柱子中心的偏移量。 r 表示反射强度。 
+- P 一般为 12000， 即一个三维场景通常用12000个柱子来表示。
+- N 一般为 100， 即一个柱子中最多有100个三维点。
+- 将D*N*P的向量压缩成 P*C维的向量。三维场景中有P个柱子，每个柱子用C维向量来表示。
+- PointPillar 的输入是3D点云数据，输出是对应的H*W*C的伪图特征。
+
+![alt text](合并PDF_纯图版_25.png) 
+- 現在見ているのは３D点群特徴抽出ネットワーク　PointPillarの構造図。
+- 点群空間を複数の柱（ピラー）に分割し、それぞれの柱に含まれる点の特徴をその柱の特徴として利用する。
+- 点群空間をD＊P＊N次元のベクトルに分割する。ここで、Dは1つの点の特徴の次元数（9次元）。Nは1つの柱に含まれる点の最大数です（100）。　Pは空間全体の柱の総数（12000）
+- Dは9次元のベクトルです、各成分は以下の通り：ｘ、ｙ、ｚ：点の座標。　ｘｃ、ｙｃ、ｚｃ　柱の中心点の座標。　ｘｐ　ｙｐ　点が柱中心点からの偏移。　ｒ　は反射強度
+- Pは通常12000、1つの３D空間を12000の柱で表現する。
+- Nは通常100、1つの柱には最大100点を含まれている。
+- D＊N＊P次元のベクトルをP＊C次元のベクトルに圧縮する。つまり、３D空間をP個柱に分割して、各柱をC次元のベクトルで表現する。
+- PointPillarの入力データは３D点群データ、出力はH＊W＊C次元の疑似画像特徴。
+  
+
 ![alt text](合并PDF_纯图版_26.png) 
 ![alt text](合并PDF_纯图版_27.png) 
+- Fusion 模块的输入 图像BEV特征 和 点云BEV特征。 输出： 融合后的特征。
+- 按照通道维度级联点云BEV特征和图像BEV特征，然后通过卷积网络提取级联后的特征。
+- 通过全局平均池化和卷积预测，实现对级联特征的自适应挑选。 通道注意力机制。
+- 由网络自行分配点云BEV特征和图像BEV特征的权重。
+
+![alt text](合并PDF_纯图版_27.png) 
+- Fusionモジュールの入力　画像ＢＥＶ特徴と点群ＢＥＶ特徴　出力　融合した特徴
+- 点群BEV特徴と画像BEV特徴をチャネル次元で連結して、その後畳み込みネットワークにっよて連結後の特徴を抽出する。
+- グローバル平均プーリングと畳み込みによる予測を用いて、連結特徴の適応的な選択を実現する（チャンネル注意機構）　
+- ネットワークが自動的に画像BEV特徴と点群BEV特徴の重みを割り当てる。
+
+
 ![alt text](合并PDF_纯图版_28.png) 
 ![alt text](合并PDF_纯图版_29.png) 
+- MIT BEVFusion
+- 
 ![alt text](合并PDF_纯图版_30.png) 
 ![alt text](合并PDF_纯图版_31.png) 
 ![alt text](合并PDF_纯图版_32.png) 
 ![alt text](合并PDF_纯图版_33.png) 
 ![alt text](合并PDF_纯图版_34.png) 
-![alt text](合并PDF_纯图版_35.png) 
-![alt text](合并PDF_纯图版_36.png) 
-![alt text](合并PDF_纯图版_37.png) 
-![alt text](合并PDF_纯图版_38.png) 
-![alt text](合并PDF_纯图版_39.png) 
-![alt text](合并PDF_纯图版_40.png) 
-![alt text](合并PDF_纯图版_41.png) 
-![alt text](合并PDF_纯图版_42.png) 
-![alt text](合并PDF_纯图版_43.png) 
-![alt text](合并PDF_纯图版_44.png) 
-![alt text](合并PDF_纯图版_45.png) 
-![alt text](合并PDF_纯图版_46.png) 
-![alt text](合并PDF_纯图版_47.png) 
-![alt text](合并PDF_纯图版_48.png) 
-![alt text](合并PDF_纯图版_49.png) 
-![alt text](合并PDF_纯图版_50.png) 
-![alt text](合并PDF_纯图版_51.png) 
-![alt text](合并PDF_纯图版_52.png) 
-![alt text](合并PDF_纯图版_53.png) 
-![alt text](合并PDF_纯图版_54.png) 
-![alt text](合并PDF_纯图版_55.png) 
-![alt text](合并PDF_纯图版_56.png) 
-![alt text](合并PDF_纯图版_57.png) 
-![alt text](合并PDF_纯图版_58.png) 
-![alt text](合并PDF_纯图版_59.png) 
-![alt text](合并PDF_纯图版_60.png) 
-![alt text](合并PDF_纯图版_61.png) 
-![alt text](合并PDF_纯图版_62.png) 
-![alt text](合并PDF_纯图版_63.png) 
-![alt text](合并PDF_纯图版_64.png) 
-![alt text](合并PDF_纯图版_65.png) 
-![alt text](合并PDF_纯图版_66.png) 
-![alt text](合并PDF_纯图版_67.png) 
-![alt text](合并PDF_纯图版_68.png) 
-![alt text](合并PDF_纯图版_69.png) 
-![alt text](合并PDF_纯图版_70.png)
+
 
 https://www.bilibili.com/video/BV1ix4y1f7mX/?spm_id_from=333.337.search-card.all.click&vd_source=f806e1845ce32bd171eeadf5991dc371
 
