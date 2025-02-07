@@ -36,5 +36,11 @@ Lidar 的主要技术参数
 
 目前，各大汽车品牌常用的Lidar及其对应的参数如下：
 ![alt text]({07463033-669F-4F03-BE68-17DE43E09205}.png)
-![alt text](0124_sensor_fusion_20.png) 
 
+![alt text](0124_sensor_fusion_20.png) 
+DigitalCar中Lidar 的相关参数
+- Lidar Detection Range Lidar 探测距离，默认为100米
+- Lidar Horizon Angle Resolution  Lidar水平角分辨率，默认值为 360， 感觉此处应该是水平视场角的意思。
+- Lidar Vertical Angle Resolution Lidar垂直角分辨率， 默认值为 90.  此处不知道单位，也不知道是否是垂直视场角的意思
+- Lidar Output Freequency  雷达输出频率，可以理解为旋转频率
+- Lidar Wiring harness Lidar的激光束数目。
