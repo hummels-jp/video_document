@@ -131,11 +131,13 @@ core specfication of camera sensor:
 1. Camera 是一个被动传感器，其光源来源于外部。
 2. 将3D物体，映射到2D像平面上，丢失了深度信息。
 3. Camera 采用 Rolling Shutter， 成像时间有误差。
-   
+
+![alt text](0124_sensor_fusion_11.png)    
 1. A camera is a passive sensor, with the light source come from an external source.
 2. 3D object are projected onto a 2d image plane, resulting in the loss of depth information. 
 3. The camera use rolling shutter model, leading to errors in the imaging time.
 
+![alt text](0124_sensor_fusion_11.png) 
 1. カメラは受動的なセンサーで、光源は外部からのものです。
 2. ３Dの物体を２Dの画像平面にマッピングすると、深度情報が失われます。
 3. カメラはローリングシャターを使用して、イメージング時間に誤差が生じます。
